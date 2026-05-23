@@ -59,3 +59,33 @@ Start the Laravel server exposed to your local network interface:
 php artisan serve --host=0.0.0.0 --port=8000
 ```
 Why this matters: Using --host=0.0.0.0 is strictly required to ensure external network connections (like your physical phone running Expo Go) can interact with the server backend. Keep this terminal window open!
+
+## Part 2: React Native Mobile Setup (Expo)
+Open a new terminal window, navigate to your mobile application folder, and install package dependencies:
+
+```Bash
+cd ebuk-mobile
+npm install
+```
+Configure network bridging:
+Because mobile devices/emulators treat localhost or 127.0.0.1 as themselves, you must route API calls to your computer's local network IP address.
+
+Create a config.js file in the root of the ebuk-mobile/ directory:
+```bash
+JavaScript
+// config.js
+export const API_URL = "http://YOUR_LAPTOP_LOCAL_IP:8000/api";
+// Example: export const API_URL = "[http://192.168.1.41:8000/api](http://192.168.1.41:8000/api)";
+```
+(To find your local IP on Windows, open Command Prompt, run ipconfig, and look for your active adapter's IPv4 Address).
+
+Start the Expo development engine:
+
+```Bash
+npx expo start
+```
+Open the application:
+
+Physical Device: Open the Expo Go app on your phone and scan the terminal's QR code.
+
+Network Requirement: Your physical phone must be connected to the exact same Wi-Fi router network interface as your development workstation computer.
