@@ -21,5 +21,6 @@ Before initializing any application, ensure you have the following installed on 
 ```text
 ebuk/
 ├── ebuk-backend/     # Laravel 11 REST API
-├── ebuk-front/       # Next.js Web Frontend
 └── ebuk-mobile/      # React Native Mobile Application (Expo)
+
+### Part 1: Laravel Backend Setup
