@@ -6,7 +6,7 @@ import CustomTextInput from '../components/CustomTextInput';
 import { useBookForm } from '../hooks/useBookForm';
 
 export default function CreateBookScreen({ navigation }) {
-  const { formData, options, selectedFile, loading, initialLoading, error, handleChange, pickFile, submitForm } = useBookForm();
+  const { formData, options, selectedFile, selectedCover, loading, initialLoading, error, handleChange, pickFile, pickCover, submitForm } = useBookForm();
 
   const handleSave = async () => {
     const success = await submitForm();
@@ -78,6 +78,19 @@ export default function CreateBookScreen({ navigation }) {
             ))}
           </Picker>
         </View>
+      </View>
+
+      <View style={styles.pickerContainer}>
+        <Text style={styles.label}>Cover Image</Text>
+        <TouchableOpacity style={styles.uploadBox} onPress={pickCover} activeOpacity={0.8}>
+          <Text style={styles.uploadIcon}>🖼️</Text>
+          <Text style={styles.uploadTitle}>
+            {selectedCover ? selectedCover.name : "Upload Book Cover (JPG, PNG)"}
+          </Text>
+          {!selectedCover && (
+            <Text style={styles.uploadSubtitle}>Tap to select an image</Text>
+          )}
+        </TouchableOpacity>
       </View>
 
       <View style={styles.pickerContainer}>

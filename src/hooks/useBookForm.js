@@ -12,6 +12,7 @@ export function useBookForm() {
   });
 
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedCover, setSelectedCover] = useState(null);
 
   const [options, setOptions] = useState({
     statuses: [],
@@ -65,6 +66,21 @@ export function useBookForm() {
     }
   };
 
+  const pickCover = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ['image/jpeg', 'image/png', 'image/jpg'],
+        copyToCacheDirectory: true,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setSelectedCover(result.assets[0]);
+      }
+    } catch (err) {
+      console.error("Error picking cover:", err);
+    }
+  };
+
   const submitForm = async () => {
     try {
       setLoading(true);
@@ -90,6 +106,14 @@ export function useBookForm() {
         });
       }
 
+      if (selectedCover) {
+        submissionData.append('cover_image', {
+          uri: selectedCover.uri,
+          name: selectedCover.name,
+          type: selectedCover.mimeType || 'image/jpeg',
+        });
+      }
+
       await bookService.createBook(submissionData);
       return true; // Success
     } catch (err) {
@@ -104,11 +128,13 @@ export function useBookForm() {
     formData,
     options,
     selectedFile,
+    selectedCover,
     loading,
     initialLoading,
     error,
     handleChange,
     pickFile,
+    pickCover,
     submitForm
   };
 }
