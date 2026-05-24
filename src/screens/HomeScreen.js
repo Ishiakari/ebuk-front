@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
-import axios from 'axios';
 import { COLORS } from '../theme/colors';
-import { API_URL } from '../../config'; // Accesses your workstation computer's IPv4 network link
+import { bookService } from '../services/api';
 import BookCard from '../components/BookCard';
 
 export default function HomeScreen({ navigation }) {
@@ -15,12 +14,8 @@ export default function HomeScreen({ navigation }) {
     try {
       setLoading(true);
       setError(null);
-      
-      // Hits your live endpoint (e.g., http://192.168.1.XX:8000/api/books)
-      const response = await axios.get(`${API_URL}/books`);
-      
-      // Updates state directly with data rows matching your MySQL blueprint
-      setBooks(response.data); 
+      const data = await bookService.getAllBooks();
+      setBooks(data); 
     } catch (err) {
       console.error("API Fetch Error:", err);
       setError("Could not sync with the backend database.");
