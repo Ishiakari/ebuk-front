@@ -7,7 +7,7 @@ import CreateBookScreen from './src/screens/CreateBookScreen';
 import BookDetailsScreen from './src/screens/BookDetailsScreen';
 import EditBookScreen from './src/screens/EditBookScreen';
 import ReadContentScreen from './src/screens/ReadContentScreen';
-import { COLORS } from './src/theme/colors';
+import COLORS from './src/theme/colors';
 
 const Stack = createNativeStackNavigator();
 

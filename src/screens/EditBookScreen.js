@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image, Alert } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { Picker } from '@react-native-picker/picker';
-import { COLORS } from '../theme/colors';
+import COLORS from '../theme/colors';
 import { ICONS } from '../theme/icons';
 import CustomTextInput from '../components/CustomTextInput';
 import { useBookForm } from '../hooks/useBookForm';

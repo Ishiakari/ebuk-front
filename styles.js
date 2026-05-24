@@ -1,36 +1,117 @@
 import { StyleSheet } from "react-native";
+import COLORS from "./src/theme/colors";
 
 export const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#1f1f1f"
+    backgroundColor: COLORS.background,
+    width: "100%"
+  },
+
+  loadingScreen: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24,
+    width: "100%"
+  },
+
+  loadingCard: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    maxWidth: 420
+  },
+
+  loadingTitle: {
+    color: COLORS.textMain,
+    fontSize: 46,
+    fontWeight: "900",
+    marginBottom: 10,
+    textAlign: "center"
+  },
+
+  loadingSubtitle: {
+    color: COLORS.textMuted,
+    fontSize: 17,
+    fontWeight: "800",
+    marginBottom: 12,
+    textAlign: "center"
+  },
+
+  loadingText: {
+    color: COLORS.primaryAction,
+    fontSize: 14,
+    fontWeight: "900",
+    textAlign: "center"
   },
 
   screen: {
     flex: 1,
-    backgroundColor: "#101927",
+    backgroundColor: COLORS.background,
     paddingHorizontal: 16,
-    paddingTop: 10
+    paddingTop: 16,
+    paddingBottom: 16,
+    width: "100%"
+  },
+
+  tabletScreen: {
+    alignSelf: "center",
+    width: "100%",
+    maxWidth: 520
+  },
+
+  centerContainer: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background
+  },
+
+  content: {
+    padding: 20,
+    paddingBottom: 50
   },
 
   topBar: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 18
+    marginBottom: 18,
+    width: "100%"
   },
 
   screenTitle: {
-    color: "#f8fafc",
+    color: COLORS.textMain,
     fontSize: 28,
     fontWeight: "800"
   },
 
   sectionTitle: {
-    color: "#f8fafc",
+    color: COLORS.textMain,
     fontSize: 18,
     fontWeight: "800",
     marginBottom: 10
+  },
+
+  headerTitle: {
+    color: COLORS.textMain,
+    fontSize: 32,
+    fontWeight: "bold",
+    marginBottom: 20,
+    marginTop: 10
+  },
+
+  headerSubtitle: {
+    color: COLORS.textMuted,
+    fontSize: 16,
+    marginBottom: 30
   },
 
   iconButton: {
@@ -41,37 +122,47 @@ export const styles = StyleSheet.create({
   },
 
   iconButtonText: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 24,
     fontWeight: "900"
   },
 
   listContent: {
     gap: 12,
-    paddingBottom: 20
+    paddingBottom: 20,
+    width: "100%"
   },
 
   bookCard: {
-    backgroundColor: "#25334a",
-    borderRadius: 8,
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 12,
     minHeight: 96,
-    padding: 14
+    padding: 14,
+    width: "100%"
   },
 
   bookTitle: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontWeight: "900"
+    color: COLORS.textMain,
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 8
   },
 
   bookLine: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 14,
     fontWeight: "700"
   },
 
+  bookAuthor: {
+    color: COLORS.textMuted,
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 12
+  },
+
   empty: {
-    color: "#94a3b8",
+    color: COLORS.textMuted,
     fontSize: 15,
     marginTop: 32,
     textAlign: "center"
@@ -79,27 +170,37 @@ export const styles = StyleSheet.create({
 
   formContent: {
     gap: 12,
-    paddingBottom: 22
+    paddingBottom: 22,
+    width: "100%"
   },
 
   field: {
-    gap: 6
+    gap: 6,
+    width: "100%"
   },
 
   fieldLabel: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 12,
     fontWeight: "800"
   },
 
+  label: {
+    color: "#E2E8F0",
+    fontSize: 14,
+    fontWeight: "600",
+    marginBottom: 8
+  },
+
   input: {
-    backgroundColor: "#25334a",
+    backgroundColor: COLORS.cardBackground,
     borderRadius: 8,
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 14,
     minHeight: 48,
     paddingHorizontal: 12,
-    paddingVertical: 10
+    paddingVertical: 10,
+    width: "100%"
   },
 
   textArea: {
@@ -107,8 +208,37 @@ export const styles = StyleSheet.create({
     textAlignVertical: "top"
   },
 
+  pickerContainer: {
+    marginBottom: 16
+  },
+
+  pickerWrapper: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#2D3748",
+    overflow: "hidden",
+    width: "100%"
+  },
+
+  picker: {
+    color: COLORS.textMain,
+    backgroundColor: COLORS.cardBackground,
+    height: 55,
+    width: "100%"
+  },
+
   uploadBox: {
-    gap: 8
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#364156",
+    borderStyle: "dashed",
+    padding: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    width: "100%"
   },
 
   uploadArea: {
@@ -119,17 +249,42 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: "center",
     minHeight: 112,
-    padding: 14
+    padding: 14,
+    width: "100%"
+  },
+
+  coverPreview: {
+    width: 120,
+    height: 180,
+    borderRadius: 8,
+    resizeMode: "cover"
   },
 
   uploadIcon: {
-    color: "#61708a",
-    fontSize: 20,
-    fontWeight: "900"
+    fontSize: 40,
+    color: COLORS.primaryAction,
+    marginBottom: 12
+  },
+
+  uploadIconSvg: {
+    marginBottom: 12
+  },
+
+  uploadTitle: {
+    color: COLORS.textMain,
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+    textAlign: "center"
+  },
+
+  uploadSubtitle: {
+    color: COLORS.textMuted,
+    fontSize: 14
   },
 
   uploadText: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 12,
     fontWeight: "800",
     marginTop: 8,
@@ -138,16 +293,43 @@ export const styles = StyleSheet.create({
 
   primaryButton: {
     alignItems: "center",
-    backgroundColor: "#2f6df6",
+    backgroundColor: COLORS.primaryAction,
     borderRadius: 8,
     justifyContent: "center",
     minHeight: 44,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    width: "100%"
   },
 
   primaryButtonText: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontWeight: "900"
+  },
+
+  saveButton: {
+    backgroundColor: COLORS.primaryAction,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 16
+  },
+
+  saveButtonText: {
+    color: COLORS.textMain,
+    fontSize: 16,
+    fontWeight: "bold"
+  },
+
+  cancelButton: {
+    paddingVertical: 12,
+    alignItems: "center"
+  },
+
+  cancelButtonText: {
+    color: COLORS.textMuted,
+    fontSize: 16,
+    fontWeight: "bold"
   },
 
   textButton: {
@@ -156,7 +338,7 @@ export const styles = StyleSheet.create({
   },
 
   textButtonLabel: {
-    color: "#4f83ff",
+    color: COLORS.primaryAction,
     fontWeight: "800"
   },
 
@@ -168,7 +350,7 @@ export const styles = StyleSheet.create({
   },
 
   deletePillText: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 12,
     fontWeight: "900"
   },
@@ -179,46 +361,186 @@ export const styles = StyleSheet.create({
     fontWeight: "800"
   },
 
-  detailWrap: {
-    gap: 14,
-    paddingBottom: 22
+  errorText: {
+    color: "#EF4444",
+    marginBottom: 16,
+    textAlign: "center"
   },
 
-  detailCard: {
-    backgroundColor: "#25334a",
-    borderRadius: 8,
-    gap: 3,
+  topSection: {
+    flexDirection: "row",
+    gap: 16,
+    marginBottom: 24
+  },
+
+  coverWrapper: {
+    width: 110,
+    height: 155
+  },
+
+  coverImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 12,
+    backgroundColor: COLORS.cardBackground
+  },
+
+  coverPlaceholder: {
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  coverPlaceholderText: {
+    color: COLORS.textMuted,
+    fontSize: 13,
+    fontWeight: "bold"
+  },
+
+  infoWrapper: {
+    flex: 1,
+    justifyContent: "center"
+  },
+
+  statusBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6
+  },
+
+  statusText: {
+    fontSize: 13,
+    fontWeight: "bold"
+  },
+
+  metaRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 20
+  },
+
+  metaBlock: {
+    flex: 1,
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 12,
     padding: 14
   },
 
+  metaLabel: {
+    color: COLORS.textMuted,
+    fontSize: 13,
+    fontWeight: "bold",
+    marginBottom: 6
+  },
+
+  metaValue: {
+    color: COLORS.textMain,
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+
+  descriptionSection: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 20
+  },
+
+  descriptionText: {
+    color: COLORS.textMain,
+    fontSize: 14,
+    lineHeight: 21
+  },
+
+  readButton: {
+    backgroundColor: COLORS.primaryAction,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    marginBottom: 14
+  },
+
+  readButtonText: {
+    color: COLORS.textMain,
+    fontSize: 16,
+    fontWeight: "bold"
+  },
+
+  actionRow: {
+    flexDirection: "row",
+    gap: 12
+  },
+
+  actionButton: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center"
+  },
+
+  backButton: {
+    backgroundColor: COLORS.cardBackground
+  },
+
+  editButton: {
+    backgroundColor: COLORS.primaryAction
+  },
+
+  backButtonText: {
+    color: COLORS.textMain,
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+
+  editButtonText: {
+    color: COLORS.textMain,
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+
+  detailWrap: {
+    gap: 14,
+    paddingBottom: 22,
+    width: "100%"
+  },
+
+  detailCard: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 8,
+    gap: 3,
+    padding: 14,
+    width: "100%"
+  },
+
   detailTitle: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 22,
     fontWeight: "900"
   },
 
   detailText: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 15,
     fontWeight: "700"
   },
 
   descriptionLabel: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 13,
     fontWeight: "900",
     marginTop: 14
   },
 
   description: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontSize: 13,
     lineHeight: 18,
     marginBottom: 14
   },
 
   pdfName: {
-    color: "#cbd5e1",
+    color: COLORS.textMuted,
     fontSize: 12,
     fontWeight: "700",
     marginBottom: 12
@@ -226,12 +548,13 @@ export const styles = StyleSheet.create({
 
   footerRow: {
     flexDirection: "row",
-    gap: 12
+    gap: 12,
+    width: "100%"
   },
 
   footerButton: {
     alignItems: "center",
-    backgroundColor: "#8c97aa",
+    backgroundColor: COLORS.cardBackground,
     borderRadius: 8,
     flex: 1,
     minHeight: 44,
@@ -240,7 +563,7 @@ export const styles = StyleSheet.create({
 
   footerButtonAccent: {
     alignItems: "center",
-    backgroundColor: "#526ca8",
+    backgroundColor: COLORS.primaryAction,
     borderRadius: 8,
     flex: 1,
     minHeight: 44,
@@ -248,37 +571,7 @@ export const styles = StyleSheet.create({
   },
 
   footerButtonText: {
-    color: "#ffffff",
+    color: COLORS.textMain,
     fontWeight: "900"
-  },
-
-  loadingScreen: {
-  flex: 1,
-  backgroundColor: "#101927",
-  alignItems: "center",
-  justifyContent: "center",
-  paddingHorizontal: 24
-},
-
-loadingTitle: {
-  color: "#ffffff",
-  fontSize: 46,
-  fontWeight: "900",
-  marginBottom: 8
-},
-
-loadingSubtitle: {
-  color: "#94a3b8",
-  fontSize: 16,
-  fontWeight: "700",
-  marginBottom: 28,
-  textAlign: "center"
-},
-
-loadingText: {
-  color: "#2f6df6",
-  fontSize: 14,
-  fontWeight: "900"
-},
-
+  }
 });

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { COLORS } from '../theme/colors';
+import COLORS from '../theme/colors';
 import { bookService } from '../services/api';
 import BookCard from '../components/BookCard';
 

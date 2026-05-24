@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { COLORS } from '../theme/colors';
+import COLORS from '../theme/colors';
 
 export default function BookCard({ book, onPress }) {
   // Helper to dynamically pick badge colors matching your system statuses

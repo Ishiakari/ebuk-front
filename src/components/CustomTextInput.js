@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TextInput, Text, StyleSheet } from 'react-native';
-import { COLORS } from '../theme/colors';
+import COLORS from '../theme/colors';
 
 export default function CustomTextInput({ label, error, ...props }) {
   return (

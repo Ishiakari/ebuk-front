@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { SvgXml } from 'react-native-svg';
 import { WebView } from 'react-native-webview';
-import { COLORS } from '../theme/colors';
+import COLORS from '../theme/colors';
 import { ICONS } from '../theme/icons';
 import { API_URL } from '../../config';
+import { saveReadingProgress, getReadingProgress } from '../services/readingProgressStorage';
 
 export default function ReadContentScreen({ route, navigation }) {
   const { book } = route.params;
@@ -15,6 +17,36 @@ export default function ReadContentScreen({ route, navigation }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const webviewRef = useRef(null);
+
+  // Load saved reading progress when screen mounts
+  useEffect(() => {
+    const loadProgress = async () => {
+      const savedPage = await getReadingProgress(book?.id);
+      if (savedPage) {
+        setCurrentPage(savedPage);
+      }
+    };
+    loadProgress();
+  }, [book?.id]);
+
+  // Save progress whenever currentPage changes
+  useEffect(() => {
+    const saveProgress = async () => {
+      if (currentPage > 1 || totalPages > 1) {
+        await saveReadingProgress(book?.id, currentPage);
+      }
+    };
+    saveProgress();
+  }, [currentPage, book?.id, totalPages]);
+
+  // Save progress when navigating away
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        saveReadingProgress(book?.id, currentPage);
+      };
+    }, [currentPage, book?.id])
+  );
 
   const pdfJsHtml = `
   <!DOCTYPE html>
@@ -111,6 +143,12 @@ export default function ReadContentScreen({ route, navigation }) {
       if (data.type === 'INIT') {
         setTotalPages(data.totalPages);
         setLoading(false);
+        // Load the saved page if it exists (with a small delay to ensure PDF is ready)
+        if (currentPage > 1) {
+          setTimeout(() => {
+            webviewRef.current?.injectJavaScript(`window.goToPage(${currentPage}); true;`);
+          }, 300);
+        }
       } else if (data.type === 'ERROR') {
         setLoading(false);
       }
