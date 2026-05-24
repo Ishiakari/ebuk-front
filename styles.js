@@ -573,5 +573,434 @@ export const styles = StyleSheet.create({
   footerButtonText: {
     color: COLORS.textMain,
     fontWeight: "900"
+  },
+
+  // CreateBookScreen styles
+  createBookCenterContainer: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  createBookContainer: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  
+  createBookContent: {
+    padding: 20,
+    paddingBottom: 50,
+  },
+  
+  createBookHeaderTitle: {
+    color: COLORS.textMain,
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    marginTop: 10,
+  },
+  
+  createBookHeaderSubtitle: {
+    color: COLORS.textMuted,
+    fontSize: 16,
+    marginBottom: 30,
+  },
+  
+  createBookLabel: {
+    color: '#E2E8F0',
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  
+  createBookPickerContainer: {
+    marginBottom: 16,
+  },
+  
+  createBookPickerWrapper: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#2D3748',
+    overflow: 'hidden',
+  },
+  
+  createBookPicker: {
+    color: COLORS.textMain,
+    height: 55,
+    backgroundColor: COLORS.cardBackground,
+  },
+  
+  createBookUploadBox: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#364156',
+    borderStyle: 'dashed',
+    padding: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  
+  createBookCoverPreview: {
+    width: 120,
+    height: 180,
+    borderRadius: 8,
+    resizeMode: 'cover',
+  },
+  
+  createBookUploadIconSvg: {
+    marginBottom: 12,
+  },
+  
+  createBookUploadTitle: {
+    color: COLORS.textMain,
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  
+  createBookUploadSubtitle: {
+    color: COLORS.textMuted,
+    fontSize: 14,
+  },
+  
+  createBookSaveButton: {
+    backgroundColor: COLORS.primaryAction,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 16,
+  },
+  
+  createBookSaveButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  
+  createBookCancelButton: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  
+  createBookCancelButtonText: {
+    color: COLORS.textMuted,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  
+  createBookErrorText: {
+    color: '#EF4444',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+
+  // HomeScreen styles
+  homeContainer: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    paddingHorizontal: 20,
+  },
+  homeHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 50,
+    paddingBottom: 10,
+  },
+  homeAppLogo: {
+    color: COLORS.primaryAction,
+    fontSize: 24,
+    fontWeight: '900',
+    letterSpacing: -0.5,
+  },
+  homeScreenTitle: {
+    color: COLORS.textMain,
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 5,
+  },
+  homeListScrollContent: {
+    paddingBottom: 100,
+  },
+  homeCenterContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 100,
+  },
+  homeErrorText: {
+    color: '#EF4444',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  homeRetryButton: {
+    backgroundColor: COLORS.primaryAction,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  homeRetryButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  homeEmptyText: {
+    color: COLORS.textMuted,
+    textAlign: 'center',
+    fontSize: 16,
+    marginTop: 40,
+  },
+  homeFab: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    backgroundColor: COLORS.primaryAction,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  homeFabIcon: {
+    color: '#FFFFFF',
+    fontSize: 36,
+    fontWeight: '300',
+    marginTop: -3,
+  },
+
+  // EditBookScreen styles
+  editBookCenterContainer: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  editBookContainer: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  editBookContent: {
+    padding: 20,
+    paddingBottom: 50,
+  },
+  editBookHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 30,
+    marginTop: 10,
+  },
+  editBookHeaderTitle: {
+    color: COLORS.textMain,
+    fontSize: 32,
+    fontWeight: 'bold',
+  },
+  editBookDeleteButton: {
+    backgroundColor: '#991B1B',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  editBookDeleteButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    marginLeft: 6,
+  },
+  editBookLabel: {
+    color: '#E2E8F0',
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  editBookPickerContainer: {
+    marginBottom: 16,
+  },
+  editBookPickerWrapper: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#2D3748',
+    overflow: 'hidden',
+  },
+  editBookPicker: {
+    color: COLORS.textMain,
+    height: 55,
+    backgroundColor: COLORS.cardBackground,
+  },
+  editBookUploadBox: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#364156',
+    borderStyle: 'dashed',
+    padding: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  editBookCoverPreview: {
+    width: 120,
+    height: 180,
+    borderRadius: 8,
+    resizeMode: 'cover',
+  },
+  editBookUploadIconSvg: {
+    marginBottom: 12,
+  },
+  editBookUploadTitle: {
+    color: COLORS.textMain,
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  editBookUploadSubtitle: {
+    color: COLORS.textMuted,
+    fontSize: 14,
+  },
+  editBookFileBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#364156',
+    padding: 20,
+  },
+  editBookFileBoxContent: {
+    flex: 1,
+  },
+  editBookFileLabel: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  editBookFileName: {
+    color: COLORS.textMuted,
+    fontSize: 14,
+  },
+  editBookReplaceButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#364156',
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  editBookReplaceButtonText: {
+    color: '#38BDF8',
+    fontWeight: 'bold',
+  },
+  editBookSaveButton: {
+    backgroundColor: COLORS.primaryAction,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 16,
+  },
+  editBookSaveButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  editBookCancelButton: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  editBookCancelButtonText: {
+    color: COLORS.textMuted,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  editBookErrorText: {
+    color: '#EF4444',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+
+  // ReadContentScreen styles
+  readContentContainer: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  readContentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 40,
+  },
+  readContentHeaderTitle: {
+    color: COLORS.textMain,
+    fontSize: 18,
+    fontWeight: 'bold',
+    flex: 1,
+    marginRight: 20,
+  },
+  readContentCloseButton: {
+    padding: 5,
+  },
+  readContentDocumentArea: {
+    flex: 1,
+    backgroundColor: '#EDEFF5',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    overflow: 'hidden',
+  },
+  readContentWebview: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  readContentLoadingOverlay: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    backgroundColor: '#EDEFF5',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  readContentFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardBackground,
+    margin: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#2D3748',
+  },
+  readContentNavButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  readContentNavButtonText: {
+    color: COLORS.textMain,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  readContentPageIndicator: {
+    color: COLORS.textMain,
+    fontSize: 16,
+    fontWeight: 'bold',
   }
 });

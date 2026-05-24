@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image, Alert } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Image, Alert } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { Picker } from '@react-native-picker/picker';
 import COLORS from '../theme/colors';
@@ -7,6 +7,7 @@ import { ICONS } from '../theme/icons';
 import CustomTextInput from '../components/CustomTextInput';
 import { useBookForm } from '../hooks/useBookForm';
 import { bookService } from '../services/api';
+import { styles } from '../../styles';
 
 export default function EditBookScreen({ route, navigation }) {
   const { book } = route.params;
@@ -44,23 +45,23 @@ export default function EditBookScreen({ route, navigation }) {
 
   if (initialLoading) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={styles.editBookCenterContainer}>
         <ActivityIndicator size="large" color={COLORS.primaryAction} />
       </View>
     );
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.headerRow}>
-        <Text style={styles.headerTitle}>Edit Book</Text>
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+    <ScrollView style={styles.editBookContainer} contentContainerStyle={styles.editBookContent}>
+      <View style={styles.editBookHeaderRow}>
+        <Text style={styles.editBookHeaderTitle}>Edit Book</Text>
+        <TouchableOpacity style={styles.editBookDeleteButton} onPress={handleDelete}>
           <SvgXml xml={ICONS.trash} />
-          <Text style={styles.deleteButtonText}>Delete</Text>
+          <Text style={styles.editBookDeleteButtonText}>Delete</Text>
         </TouchableOpacity>
       </View>
       
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text style={styles.editBookErrorText}>{error}</Text>}
 
       <CustomTextInput
         label="Title"
@@ -100,224 +101,71 @@ export default function EditBookScreen({ route, navigation }) {
         onChangeText={(text) => handleChange('description', text)}
       />
 
-      <View style={styles.pickerContainer}>
-        <Text style={styles.label}>Status</Text>
-        <View style={styles.pickerWrapper}>
+      <View style={styles.editBookPickerContainer}>
+        <Text style={styles.editBookLabel}>Status</Text>
+        <View style={styles.editBookPickerWrapper}>
           <Picker
             selectedValue={formData.status_id}
             dropdownIconColor="#A0AEC0"
-            style={styles.picker}
+            style={styles.editBookPicker}
             onValueChange={(itemValue) => handleChange('status_id', itemValue)}
           >
-            <Picker.Item label="Choose status" value="" color={COLORS.textMuted} />
+            <Picker.Item label="Choose status" value="" color="#1C2431" />
             {options.statuses.map(status => (
-              <Picker.Item key={status.id} label={status.name} value={status.id} color={COLORS.textMain} />
+              <Picker.Item key={status.id} label={status.name} value={status.id} color="#1C2431" />
             ))}
           </Picker>
         </View>
       </View>
 
-      <View style={styles.pickerContainer}>
-        <Text style={styles.label}>Cover Image</Text>
-        <TouchableOpacity style={styles.uploadBox} onPress={pickCover} activeOpacity={0.8}>
+      <View style={styles.editBookPickerContainer}>
+        <Text style={styles.editBookLabel}>Cover Image</Text>
+        <TouchableOpacity style={styles.editBookUploadBox} onPress={pickCover} activeOpacity={0.8}>
           {selectedCover ? (
-            <Image source={{ uri: selectedCover.uri }} style={styles.coverPreview} />
+            <Image source={{ uri: selectedCover.uri }} style={styles.editBookCoverPreview} />
           ) : (
             <>
-              <SvgXml xml={ICONS.imagePlaceholder} style={styles.uploadIconSvg} />
-              <Text style={styles.uploadTitle}>Upload Book Cover</Text>
-              <Text style={styles.uploadSubtitle}>Tap to select an image (JPG, PNG)</Text>
+              <SvgXml xml={ICONS.imagePlaceholder} style={styles.editBookUploadIconSvg} />
+              <Text style={styles.editBookUploadTitle}>Upload Book Cover</Text>
+              <Text style={styles.editBookUploadSubtitle}>Tap to select an image (JPG, PNG)</Text>
             </>
           )}
         </TouchableOpacity>
       </View>
 
-      <View style={styles.pickerContainer}>
-        <View style={styles.fileBox}>
-          <View style={styles.fileBoxContent}>
-            <Text style={styles.fileLabel}>PDF attached</Text>
-            <Text style={styles.fileName}>
+      <View style={styles.editBookPickerContainer}>
+        <View style={styles.editBookFileBox}>
+          <View style={styles.editBookFileBoxContent}>
+            <Text style={styles.editBookFileLabel}>PDF attached</Text>
+            <Text style={styles.editBookFileName}>
               {selectedFile ? (selectedFile.name || selectedFile.file_path?.split('/').pop()) : "No file attached"}
             </Text>
           </View>
-          <TouchableOpacity style={styles.replaceButton} onPress={pickFile}>
-            <Text style={styles.replaceButtonText}>Replace</Text>
+          <TouchableOpacity style={styles.editBookReplaceButton} onPress={pickFile}>
+            <Text style={styles.editBookReplaceButtonText}>Replace</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <TouchableOpacity 
-        style={styles.saveButton} 
+        style={styles.editBookSaveButton} 
         onPress={handleSave} 
         disabled={loading}
       >
         {loading ? (
           <ActivityIndicator color="#FFFFFF" />
         ) : (
-          <Text style={styles.saveButtonText}>Save Changes</Text>
+          <Text style={styles.editBookSaveButtonText}>Save Changes</Text>
         )}
       </TouchableOpacity>
 
       <TouchableOpacity 
-        style={styles.cancelButton} 
+        style={styles.editBookCancelButton} 
         onPress={() => navigation.goBack()}
         disabled={loading}
       >
-        <Text style={styles.cancelButtonText}>Cancel</Text>
+        <Text style={styles.editBookCancelButtonText}>Cancel</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  centerContainer: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  content: {
-    padding: 20,
-    paddingBottom: 50,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 30,
-    marginTop: 10,
-  },
-  headerTitle: {
-    color: COLORS.textMain,
-    fontSize: 32,
-    fontWeight: 'bold',
-  },
-  deleteButton: {
-    backgroundColor: '#991B1B', // Dark red background
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-  },
-  deleteButtonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    marginLeft: 6,
-  },
-  label: {
-    color: '#E2E8F0',
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  pickerContainer: {
-    marginBottom: 16,
-  },
-  pickerWrapper: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#2D3748',
-    overflow: 'hidden',
-  },
-  picker: {
-    color: COLORS.textMain,
-    height: 55,
-  },
-  uploadBox: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#364156',
-    borderStyle: 'dashed',
-    padding: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  coverPreview: {
-    width: 120,
-    height: 180,
-    borderRadius: 8,
-    resizeMode: 'cover',
-  },
-  uploadIconSvg: {
-    marginBottom: 12,
-  },
-  uploadTitle: {
-    color: COLORS.textMain,
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  uploadSubtitle: {
-    color: COLORS.textMuted,
-    fontSize: 14,
-  },
-  fileBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#364156',
-    padding: 20,
-  },
-  fileBoxContent: {
-    flex: 1,
-  },
-  fileLabel: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  fileName: {
-    color: COLORS.textMuted,
-    fontSize: 14,
-  },
-  replaceButton: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: '#364156',
-    borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  replaceButtonText: {
-    color: '#38BDF8', // Light blue
-    fontWeight: 'bold',
-  },
-  saveButton: {
-    backgroundColor: COLORS.primaryAction,
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 16,
-  },
-  saveButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  cancelButton: {
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: COLORS.textMuted,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  errorText: {
-    color: '#EF4444',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-});

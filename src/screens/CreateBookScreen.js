@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { Picker } from '@react-native-picker/picker';
 import COLORS from '../theme/colors';
 import { ICONS } from '../theme/icons';
 import CustomTextInput from '../components/CustomTextInput';
 import { useBookForm } from '../hooks/useBookForm';
+import { styles } from '../../styles';
 
 export default function CreateBookScreen({ navigation }) {
   const { formData, options, selectedFile, selectedCover, loading, initialLoading, error, handleChange, pickFile, pickCover, submitForm } = useBookForm();
@@ -19,7 +20,7 @@ export default function CreateBookScreen({ navigation }) {
 
   if (initialLoading) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={styles.createBookCenterContainer}>
         <ActivityIndicator size="large" color={COLORS.primaryAction} />
       </View>
     );
@@ -30,11 +31,11 @@ export default function CreateBookScreen({ navigation }) {
   const years = Array.from({ length: 100 }, (_, i) => (currentYear - i).toString());
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.headerTitle}>New Book</Text>
-      <Text style={styles.headerSubtitle}>Fill in the info below</Text>
+    <ScrollView style={styles.createBookContainer} contentContainerStyle={styles.createBookContent}>
+      <Text style={styles.createBookHeaderTitle}>New Book</Text>
+      <Text style={styles.createBookHeaderSubtitle}>Fill in the info below</Text>
       
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text style={styles.createBookErrorText}>{error}</Text>}
 
       <CustomTextInput
         label="Title"
@@ -74,181 +75,70 @@ export default function CreateBookScreen({ navigation }) {
         onChangeText={(text) => handleChange('description', text)}
       />
 
-      <View style={styles.pickerContainer}>
-        <Text style={styles.label}>Status</Text>
-        <View style={styles.pickerWrapper}>
+      <View style={styles.createBookPickerContainer}>
+        <Text style={styles.createBookLabel}>Status</Text>
+        <View style={styles.createBookPickerWrapper}>
           <Picker
             selectedValue={formData.status_id}
             dropdownIconColor="#A0AEC0"
-            style={styles.picker}
+            style={styles.createBookPicker}
             onValueChange={(itemValue) => handleChange('status_id', itemValue)}
           >
-            <Picker.Item label="Choose status" value="" color={COLORS.textMuted} />
+            <Picker.Item label="Choose status" value="" color="#1C2431" />
             {options.statuses.map(status => (
-              <Picker.Item key={status.id} label={status.name} value={status.id} color={COLORS.textMain} />
+              <Picker.Item key={status.id} label={status.name} value={status.id} color="#1C2431" />
             ))}
           </Picker>
         </View>
       </View>
 
-      <View style={styles.pickerContainer}>
-        <Text style={styles.label}>Cover Image</Text>
-        <TouchableOpacity style={styles.uploadBox} onPress={pickCover} activeOpacity={0.8}>
+      <View style={styles.createBookPickerContainer}>
+        <Text style={styles.createBookLabel}>Cover Image</Text>
+        <TouchableOpacity style={styles.createBookUploadBox} onPress={pickCover} activeOpacity={0.8}>
           {selectedCover ? (
-            <Image source={{ uri: selectedCover.uri }} style={styles.coverPreview} />
+            <Image source={{ uri: selectedCover.uri }} style={styles.createBookCoverPreview} />
           ) : (
             <>
-              <SvgXml xml={ICONS.imagePlaceholder} style={styles.uploadIconSvg} />
-              <Text style={styles.uploadTitle}>Upload Book Cover</Text>
-              <Text style={styles.uploadSubtitle}>Tap to select an image (JPG, PNG)</Text>
+              <SvgXml xml={ICONS.imagePlaceholder} style={styles.createBookUploadIconSvg} />
+              <Text style={styles.createBookUploadTitle}>Upload Book Cover</Text>
+              <Text style={styles.createBookUploadSubtitle}>Tap to select an image (JPG, PNG)</Text>
             </>
           )}
         </TouchableOpacity>
       </View>
 
-      <View style={styles.pickerContainer}>
-        <Text style={styles.label}>PDF Content</Text>
-        <TouchableOpacity style={styles.uploadBox} onPress={pickFile} activeOpacity={0.8}>
-          <SvgXml xml={ICONS.upArrow} style={styles.uploadIconSvg} />
-          <Text style={styles.uploadTitle}>
+      <View style={styles.createBookPickerContainer}>
+        <Text style={styles.createBookLabel}>PDF Content</Text>
+        <TouchableOpacity style={styles.createBookUploadBox} onPress={pickFile} activeOpacity={0.8}>
+          <SvgXml xml={ICONS.upArrow} style={styles.createBookUploadIconSvg} />
+          <Text style={styles.createBookUploadTitle}>
             {selectedFile ? selectedFile.name : "Upload PDF, EPUB, MOBI File"}
           </Text>
           {!selectedFile && (
-            <Text style={styles.uploadSubtitle}>Drag or tap to attach book content</Text>
+            <Text style={styles.createBookUploadSubtitle}>Drag or tap to attach book content</Text>
           )}
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity 
-        style={styles.saveButton} 
+        style={styles.createBookSaveButton} 
         onPress={handleSave} 
         disabled={loading}
       >
         {loading ? (
           <ActivityIndicator color="#FFFFFF" />
         ) : (
-          <Text style={styles.saveButtonText}>Create Book</Text>
+          <Text style={styles.createBookSaveButtonText}>Create Book</Text>
         )}
       </TouchableOpacity>
 
       <TouchableOpacity 
-        style={styles.cancelButton} 
+        style={styles.createBookCancelButton} 
         onPress={() => navigation.goBack()}
         disabled={loading}
       >
-        <Text style={styles.cancelButtonText}>Cancel</Text>
+        <Text style={styles.createBookCancelButtonText}>Cancel</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  centerContainer: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  content: {
-    padding: 20,
-    paddingBottom: 50,
-  },
-  headerTitle: {
-    color: COLORS.textMain,
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 4,
-    marginTop: 10,
-  },
-  headerSubtitle: {
-    color: COLORS.textMuted,
-    fontSize: 16,
-    marginBottom: 30,
-  },
-  label: {
-    color: '#E2E8F0',
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  pickerContainer: {
-    marginBottom: 16,
-  },
-  pickerWrapper: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#2D3748',
-    overflow: 'hidden',
-  },
-  picker: {
-    color: COLORS.textMain,
-    height: 55,
-  },
-  uploadBox: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#364156',
-    borderStyle: 'dashed',
-    padding: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  coverPreview: {
-    width: 120,
-    height: 180,
-    borderRadius: 8,
-    resizeMode: 'cover',
-  },
-  uploadIcon: {
-    fontSize: 40,
-    color: COLORS.primaryAction,
-    marginBottom: 12,
-  },
-  uploadIconSvg: {
-    marginBottom: 12,
-  },
-  uploadTitle: {
-    color: COLORS.textMain,
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  uploadSubtitle: {
-    color: COLORS.textMuted,
-    fontSize: 14,
-  },
-  saveButton: {
-    backgroundColor: COLORS.primaryAction,
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 16,
-  },
-  saveButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  cancelButton: {
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: COLORS.textMuted,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  errorText: {
-    color: '#EF4444',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-});

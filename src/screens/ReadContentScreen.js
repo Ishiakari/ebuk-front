@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { SvgXml } from 'react-native-svg';
 import { WebView } from 'react-native-webview';
@@ -7,6 +7,7 @@ import COLORS from '../theme/colors';
 import { ICONS } from '../theme/icons';
 import { API_URL } from '../../config';
 import { saveReadingProgress, getReadingProgress } from '../services/readingProgressStorage';
+import { styles } from '../../styles';
 
 export default function ReadContentScreen({ route, navigation }) {
   const { book } = route.params;
@@ -163,17 +164,17 @@ export default function ReadContentScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle} numberOfLines={1}>{fileName}</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton}>
+    <View style={styles.readContentContainer}>
+      <View style={styles.readContentHeader}>
+        <Text style={styles.readContentHeaderTitle} numberOfLines={1}>{fileName}</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.readContentCloseButton}>
           <SvgXml xml={ICONS.close} />
         </TouchableOpacity>
       </View>
 
-      <View style={styles.documentArea}>
+      <View style={styles.readContentDocumentArea}>
         {loading && (
-          <View style={styles.loadingOverlay}>
+          <View style={styles.readContentLoadingOverlay}>
             <ActivityIndicator size="large" color={COLORS.primaryAction} />
           </View>
         )}
@@ -181,7 +182,7 @@ export default function ReadContentScreen({ route, navigation }) {
           ref={webviewRef}
           source={{ html: pdfJsHtml, baseUrl: API_URL.replace('/api', '') }}
           onMessage={handleMessage}
-          style={styles.webview}
+          style={styles.readContentWebview}
           originWhitelist={['*']}
           allowFileAccess={true}
           allowUniversalAccessFromFileURLs={true}
@@ -189,92 +190,24 @@ export default function ReadContentScreen({ route, navigation }) {
       </View>
 
       {!loading && totalPages > 0 && (
-        <View style={styles.footer}>
+        <View style={styles.readContentFooter}>
           <TouchableOpacity 
-            style={styles.navButton} 
+            style={styles.readContentNavButton} 
             onPress={() => changePage(currentPage - 1)}
           >
-            <Text style={styles.navButtonText}>❮</Text>
+            <Text style={styles.readContentNavButtonText}>❮</Text>
           </TouchableOpacity>
           
-          <Text style={styles.pageIndicator}>Page {currentPage} / {totalPages}</Text>
+          <Text style={styles.readContentPageIndicator}>Page {currentPage} / {totalPages}</Text>
           
           <TouchableOpacity 
-            style={styles.navButton}
+            style={styles.readContentNavButton}
             onPress={() => changePage(currentPage + 1)}
           >
-            <Text style={styles.navButtonText}>❯</Text>
+            <Text style={styles.readContentNavButtonText}>❯</Text>
           </TouchableOpacity>
         </View>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    paddingTop: 40,
-  },
-  headerTitle: {
-    color: COLORS.textMain,
-    fontSize: 18,
-    fontWeight: 'bold',
-    flex: 1,
-    marginRight: 20,
-  },
-  closeButton: {
-    padding: 5,
-  },
-  documentArea: {
-    flex: 1,
-    backgroundColor: '#EDEFF5',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    overflow: 'hidden',
-  },
-  webview: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    backgroundColor: '#EDEFF5',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: COLORS.cardBackground,
-    margin: 20,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: '#2D3748',
-  },
-  navButton: {
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-  },
-  navButtonText: {
-    color: COLORS.textMain,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  pageIndicator: {
-    color: COLORS.textMain,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
