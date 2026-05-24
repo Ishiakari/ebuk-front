@@ -250,5 +250,35 @@ export const styles = StyleSheet.create({
   footerButtonText: {
     color: "#ffffff",
     fontWeight: "900"
-  }
+  },
+
+  loadingScreen: {
+  flex: 1,
+  backgroundColor: "#101927",
+  alignItems: "center",
+  justifyContent: "center",
+  paddingHorizontal: 24
+},
+
+loadingTitle: {
+  color: "#ffffff",
+  fontSize: 46,
+  fontWeight: "900",
+  marginBottom: 8
+},
+
+loadingSubtitle: {
+  color: "#94a3b8",
+  fontSize: 16,
+  fontWeight: "700",
+  marginBottom: 28,
+  textAlign: "center"
+},
+
+loadingText: {
+  color: "#2f6df6",
+  fontSize: 14,
+  fontWeight: "900"
+},
+
 });

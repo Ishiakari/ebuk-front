@@ -32,6 +32,7 @@ const emptyForm = {
 
 export default function App() {
   const [books, setBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [screen, setScreen] = useState("home");
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
@@ -41,6 +42,15 @@ export default function App() {
   useEffect(() => {
     loadBooks();
   }, []);
+
+  useEffect(() => {    
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  },[]);
+
 
   useEffect(() => {
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(books)).catch(() => {
@@ -205,6 +215,16 @@ export default function App() {
     setScreen("details");
   }
 
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <statusBar style="light" />
+        <text style={styles.loadingTitle}>eBuk</text>
+        <text style={styles.loadingSubtitle}>Loading your library...</text>
+        <text style={styles.loadingText}>Please wait a moment</text>
+      </SafeAreaView>
+    )
+  }
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" />
