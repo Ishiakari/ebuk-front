@@ -68,20 +68,16 @@ export const bookService = {
   },
 
   updateBook: async (id, bookData) => {
-    if (bookData instanceof FormData) {
-      bookData.append("_method", "PUT");
-    }
+  const response = await fetch(`${API_URL}/books/${id}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json"
+    },
+    body: bookData
+  });
 
-    const response = await fetch(`${API_URL}/books/${id}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json"
-      },
-      body: bookData
-    });
-
-    return parseResponse(response);
-  },
+  return parseResponse(response);
+},
 
   deleteBook: async (id) => {
     const response = await api.delete(`/books/${id}`);
