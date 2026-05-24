@@ -218,10 +218,10 @@ export default function App() {
   if (isLoading) {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <statusBar style="light" />
-        <text style={styles.loadingTitle}>eBuk</text>
-        <text style={styles.loadingSubtitle}>Loading your library...</text>
-        <text style={styles.loadingText}>Please wait a moment</text>
+        <StatusBar style="light" />
+        <Text style={styles.loadingTitle}>eBuk</Text>
+        <Text style={styles.loadingSubtitle}>Loading your library...</Text>
+        <Text style={styles.loadingText}>Please wait a moment</Text>
       </SafeAreaView>
     )
   }
