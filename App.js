@@ -1,44 +1,103 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import axios from 'axios';
-import { API_URL } from './config'; // Imports your 192.168.1.41 IP
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Alert,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from "react-native";
+
+const STORAGE_KEY = "EBUK_BOOKS";
+
+const emptyForm = {
+  title: "",
+  author: "",
+  genre: "",
+  year: "",
+  status: "",
+  description: "",
+  pdf: null
+};
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState('');
+  const [books, setBooks] = useState([]);
+  const [screen, setScreen] = useState("home");
+  const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    // Testing connection to your Laravel GET /api/books endpoint
-    axios.get(`${API_URL}/books`)
-      .then(response => {
-        setMessage('Connection successful! Backend is responding.');
-        console.log('Data from Laravel:', response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setMessage('Connection failed. Check terminal logs.');
-        console.error('API Error:', error);
-        setLoading(false);
-      });
+    loadBooks();
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>eBuk Mobile Test</Text>
-      <Text style={styles.subtitle}>Target: {API_URL}</Text>
-      
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <Text style={styles.status}>{message}</Text>
-      )}
-    </View>
-  );
-}
+  useEffect(() => {
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(books)).catch(() => {
+      setMessage("Unable to save your library.");
+    });
+  }, [books]);
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
-  subtitle: { fontSize: 14, color: '#666', marginBottom: 20 },
-  status: { fontSize: 16, textAlign: 'center', color: '#333' }
-});
+  const sortedBooks = useMemo(
+    () => [...books].sort((a, b) => a.title.localeCompare(b.title)),
+    [books]
+  );
+
+  const selectedBook = books.find((book) => book.id === selectedId);
+
+  async function loadBooks() {
+    try {
+      const saved = await AsyncStorage.getItem(STORAGE_KEY);
+      if (saved) setBooks(JSON.parse(saved));
+    } catch {
+      setMessage("Unable to load your library.");
+    }
+  }
+
+  function updateForm(field, value) {
+    setForm((current) => ({ ...current, [field]: value }));
+  }
+
+  async function pickPdf() {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "application/pdf",
+        copyToCacheDirectory: true
+      });
+
+      if (result.canceled) return;
+
+      const file = result.assets[0];
+      const safeName = file.name.replace(/[^\w.-]/g, "_");
+      const localUri = `${FileSystem.documentDirectory}${Date.now()}-${safeName}`;
+
+      await FileSystem.copyAsync({ from: file.uri, to: localUri });
+
+      updateForm("pdf", {
+        name: file.name,
+        uri: localUri,
+        size: file.size ?? null
+      });
+      setMessage("PDF file attached.");
+    } catch {
+      setMessage("PDF upload failed. Please try another file.");
+    }
+  }
+
+  function resetForm() {
+    setForm(emptyForm);
+    setEditingId(null);
+    setMessage("");
+
+  }
+}
