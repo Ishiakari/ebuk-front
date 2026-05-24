@@ -22,7 +22,27 @@ export const bookService = {
   },
 
   createBook: async (bookData) => {
-    const response = await api.post('/books', bookData);
+    const isFormData = bookData instanceof FormData;
+    const response = await api.post('/books', bookData, {
+      headers: {
+        'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
+      },
+    });
+    return response.data;
+  },
+
+  getAuthors: async () => {
+    const response = await api.get('/authors');
+    return response.data;
+  },
+
+  getGenres: async () => {
+    const response = await api.get('/genres');
+    return response.data;
+  },
+
+  getStatuses: async () => {
+    const response = await api.get('/statuses');
     return response.data;
   },
 };

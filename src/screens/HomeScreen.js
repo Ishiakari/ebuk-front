@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { COLORS } from '../theme/colors';
 import { bookService } from '../services/api';
 import BookCard from '../components/BookCard';
@@ -24,10 +25,12 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  // Mount effect to automatically fetch records on boot execution
-  useEffect(() => {
-    fetchBooks();
-  }, []);
+  // Automatically fetch records when the screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchBooks();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>

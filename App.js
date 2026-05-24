@@ -1,21 +1,41 @@
 import React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/HomeScreen';
+import CreateBookScreen from './src/screens/CreateBookScreen';
 import { COLORS } from './src/theme/colors';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#121A27' }}>
-      {/* Ensures the top phone status bar text matches your dark theme colors */}
-      <StatusBar barStyle="light-content" backgroundColor="#121A27" />
-      
-      {/* Renders your beautiful home screen design directly */}
-      <HomeScreen navigation={mockNavigation} />
-    </SafeAreaView>
+    <NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
+      <Stack.Navigator 
+        initialRouteName="Home"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: COLORS.background,
+          },
+          headerTintColor: COLORS.primaryAction,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerShadowVisible: false, // Remove border line on header
+        }}
+      >
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ headerShown: false }} // Home has its own custom header
+        />
+        <Stack.Screen 
+          name="CreateBook" 
+          component={CreateBookScreen} 
+          options={{ title: '' }} // Clear default title, screen has its own title
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-// Simple placeholder navigation object to prevent any button errors during the UI test
-const mockNavigation = {
-  navigate: (screenName) => alert(`Routing path simulated to: ${screenName}`),
-};
