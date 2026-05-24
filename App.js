@@ -4,6 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/HomeScreen';
 import CreateBookScreen from './src/screens/CreateBookScreen';
+import BookDetailsScreen from './src/screens/BookDetailsScreen';
+import EditBookScreen from './src/screens/EditBookScreen';
+import ReadContentScreen from './src/screens/ReadContentScreen';
 import { COLORS } from './src/theme/colors';
 
 const Stack = createNativeStackNavigator();
@@ -15,26 +18,15 @@ export default function App() {
       <Stack.Navigator 
         initialRouteName="Home"
         screenOptions={{
-          headerStyle: {
-            backgroundColor: COLORS.background,
-          },
-          headerTintColor: COLORS.primaryAction,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerShadowVisible: false, // Remove border line on header
+          headerShown: false,
+          contentStyle: { backgroundColor: COLORS.background }
         }}
       >
-        <Stack.Screen 
-          name="Home" 
-          component={HomeScreen} 
-          options={{ headerShown: false }} // Home has its own custom header
-        />
-        <Stack.Screen 
-          name="CreateBook" 
-          component={CreateBookScreen} 
-          options={{ title: '' }} // Clear default title, screen has its own title
-        />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="CreateBook" component={CreateBookScreen} />
+        <Stack.Screen name="BookDetails" component={BookDetailsScreen} />
+        <Stack.Screen name="EditBook" component={EditBookScreen} />
+        <Stack.Screen name="ReadContent" component={ReadContentScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

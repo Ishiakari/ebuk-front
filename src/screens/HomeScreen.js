@@ -66,7 +66,7 @@ export default function HomeScreen({ navigation }) {
           renderItem={({ item }) => (
             <BookCard 
               book={item} 
-              onPress={() => navigation.navigate('BookDetail', { bookId: item.id })} 
+              onPress={() => navigation.navigate('BookDetails', { book: item })} 
             />
           )}
           contentContainerStyle={styles.listScrollContent}

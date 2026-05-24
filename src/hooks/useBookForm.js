@@ -2,17 +2,20 @@ import { useState, useEffect } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
 import { bookService } from '../services/api';
 
-export function useBookForm() {
+export function useBookForm(initialBook = null) {
   const [formData, setFormData] = useState({
-    title: '',
-    author_name: '',
-    year: '',
-    genre_name: '',
-    status_id: '',
+    title: initialBook?.title || '',
+    author_name: initialBook?.author || '',
+    year: initialBook?.year || '',
+    genre_name: initialBook?.genre || '',
+    status_id: initialBook?.status_id || '',
+    description: initialBook?.description || '',
   });
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedCover, setSelectedCover] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(initialBook?.file || null);
+  const [selectedCover, setSelectedCover] = useState(
+    initialBook?.cover_image ? { uri: initialBook.cover_image, isExisting: true } : null
+  );
 
   const [options, setOptions] = useState({
     statuses: [],
@@ -97,24 +100,29 @@ export function useBookForm() {
       submissionData.append('genre_name', formData.genre_name);
       submissionData.append('status_id', formData.status_id);
       if (formData.year) submissionData.append('year', formData.year);
+      if (formData.description) submissionData.append('description', formData.description);
       
-      if (selectedFile) {
+      if (selectedFile && !selectedFile.file_path) {
         submissionData.append('file', {
           uri: selectedFile.uri,
-          name: selectedFile.name,
-          type: selectedFile.mimeType || 'application/octet-stream',
+          name: selectedFile.name || 'file.pdf',
+          type: selectedFile.mimeType || 'application/pdf',
         });
       }
 
-      if (selectedCover) {
+      if (selectedCover && !selectedCover.isExisting) {
         submissionData.append('cover_image', {
           uri: selectedCover.uri,
-          name: selectedCover.name,
+          name: selectedCover.name || 'cover.jpg',
           type: selectedCover.mimeType || 'image/jpeg',
         });
       }
 
-      await bookService.createBook(submissionData);
+      if (initialBook && initialBook.id) {
+        await bookService.updateBook(initialBook.id, submissionData);
+      } else {
+        await bookService.createBook(submissionData);
+      }
       return true; // Success
     } catch (err) {
       setError(err.message || "Failed to create book.");

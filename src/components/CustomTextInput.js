@@ -7,7 +7,11 @@ export default function CustomTextInput({ label, error, ...props }) {
     <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
-        style={[styles.input, error && styles.inputError]}
+        style={[
+          styles.input, 
+          props.multiline && styles.inputMultiline,
+          error && styles.inputError
+        ]}
         placeholderTextColor={COLORS.textMuted}
         {...props}
       />
@@ -35,6 +39,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#252F3F',
+  },
+  inputMultiline: {
+    minHeight: 100,
+    textAlignVertical: 'top',
   },
   inputError: {
     borderColor: '#EF4444',

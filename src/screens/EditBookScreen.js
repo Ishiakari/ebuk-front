@@ -1,20 +1,45 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image, Alert } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { Picker } from '@react-native-picker/picker';
 import { COLORS } from '../theme/colors';
 import { ICONS } from '../theme/icons';
 import CustomTextInput from '../components/CustomTextInput';
 import { useBookForm } from '../hooks/useBookForm';
+import { bookService } from '../services/api';
 
-export default function CreateBookScreen({ navigation }) {
-  const { formData, options, selectedFile, selectedCover, loading, initialLoading, error, handleChange, pickFile, pickCover, submitForm } = useBookForm();
+export default function EditBookScreen({ route, navigation }) {
+  const { book } = route.params;
+  const { formData, options, selectedFile, selectedCover, loading, initialLoading, error, handleChange, pickFile, pickCover, submitForm } = useBookForm(book);
 
   const handleSave = async () => {
     const success = await submitForm();
     if (success) {
-      navigation.goBack();
+      // Need to go back to Home (or refresh BookDetails)
+      navigation.navigate('Home');
     }
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      "Delete Book",
+      "Are you sure you want to delete this book? This action cannot be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        { 
+          text: "Delete", 
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await bookService.deleteBook(book.id);
+              navigation.navigate('Home');
+            } catch (err) {
+              Alert.alert("Error", "Failed to delete book");
+            }
+          }
+        }
+      ]
+    );
   };
 
   if (initialLoading) {
@@ -25,14 +50,15 @@ export default function CreateBookScreen({ navigation }) {
     );
   }
 
-  // Generate an array of years for the dropdown (e.g. from 1900 to current year)
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 100 }, (_, i) => (currentYear - i).toString());
-
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.headerTitle}>New Book</Text>
-      <Text style={styles.headerSubtitle}>Fill in the info below</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.headerTitle}>Edit Book</Text>
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+          <SvgXml xml={ICONS.trash} />
+          <Text style={styles.deleteButtonText}>Delete</Text>
+        </TouchableOpacity>
+      </View>
       
       {error && <Text style={styles.errorText}>{error}</Text>}
 
@@ -52,7 +78,7 @@ export default function CreateBookScreen({ navigation }) {
 
       <CustomTextInput
         label="Genre"
-        placeholder="Enter genre (e.g. Fiction, Sci-Fi)"
+        placeholder="Enter genre (e.g. Software, Self-help)"
         value={formData.genre_name}
         onChangeText={(text) => handleChange('genre_name', text)}
       />
@@ -107,16 +133,17 @@ export default function CreateBookScreen({ navigation }) {
       </View>
 
       <View style={styles.pickerContainer}>
-        <Text style={styles.label}>PDF Content</Text>
-        <TouchableOpacity style={styles.uploadBox} onPress={pickFile} activeOpacity={0.8}>
-          <SvgXml xml={ICONS.upArrow} style={styles.uploadIconSvg} />
-          <Text style={styles.uploadTitle}>
-            {selectedFile ? selectedFile.name : "Upload PDF, EPUB, MOBI File"}
-          </Text>
-          {!selectedFile && (
-            <Text style={styles.uploadSubtitle}>Drag or tap to attach book content</Text>
-          )}
-        </TouchableOpacity>
+        <View style={styles.fileBox}>
+          <View style={styles.fileBoxContent}>
+            <Text style={styles.fileLabel}>PDF attached</Text>
+            <Text style={styles.fileName}>
+              {selectedFile ? (selectedFile.name || selectedFile.file_path?.split('/').pop()) : "No file attached"}
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.replaceButton} onPress={pickFile}>
+            <Text style={styles.replaceButtonText}>Replace</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <TouchableOpacity 
@@ -127,7 +154,7 @@ export default function CreateBookScreen({ navigation }) {
         {loading ? (
           <ActivityIndicator color="#FFFFFF" />
         ) : (
-          <Text style={styles.saveButtonText}>Create Book</Text>
+          <Text style={styles.saveButtonText}>Save Changes</Text>
         )}
       </TouchableOpacity>
 
@@ -157,17 +184,30 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 50,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 30,
+    marginTop: 10,
+  },
   headerTitle: {
     color: COLORS.textMain,
     fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 4,
-    marginTop: 10,
   },
-  headerSubtitle: {
-    color: COLORS.textMuted,
-    fontSize: 16,
-    marginBottom: 30,
+  deleteButton: {
+    backgroundColor: '#991B1B', // Dark red background
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  deleteButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    marginLeft: 6,
   },
   label: {
     color: '#E2E8F0',
@@ -205,11 +245,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     resizeMode: 'cover',
   },
-  uploadIcon: {
-    fontSize: 40,
-    color: COLORS.primaryAction,
-    marginBottom: 12,
-  },
   uploadIconSvg: {
     marginBottom: 12,
   },
@@ -223,6 +258,40 @@ const styles = StyleSheet.create({
   uploadSubtitle: {
     color: COLORS.textMuted,
     fontSize: 14,
+  },
+  fileBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#364156',
+    padding: 20,
+  },
+  fileBoxContent: {
+    flex: 1,
+  },
+  fileLabel: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  fileName: {
+    color: COLORS.textMuted,
+    fontSize: 14,
+  },
+  replaceButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#364156',
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  replaceButtonText: {
+    color: '#38BDF8', // Light blue
+    fontWeight: 'bold',
   },
   saveButton: {
     backgroundColor: COLORS.primaryAction,

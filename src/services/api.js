@@ -21,6 +21,11 @@ export const bookService = {
     return response.data;
   },
 
+  getBook: async (id) => {
+    const response = await api.get(`/books/${id}`);
+    return response.data;
+  },
+
   createBook: async (bookData) => {
     const isFormData = bookData instanceof FormData;
     const response = await api.post('/books', bookData, {
@@ -28,6 +33,22 @@ export const bookService = {
         'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
       },
     });
+    return response.data;
+  },
+
+  updateBook: async (id, bookData) => {
+    const isFormData = bookData instanceof FormData;
+    // We use POST to /books/{id} instead of PUT for easier multipart/form-data support in Laravel
+    const response = await api.post(`/books/${id}`, bookData, {
+      headers: {
+        'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
+      },
+    });
+    return response.data;
+  },
+
+  deleteBook: async (id) => {
+    const response = await api.delete(`/books/${id}`);
     return response.data;
   },
 
