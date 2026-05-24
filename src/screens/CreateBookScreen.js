@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 import { Picker } from '@react-native-picker/picker';
 import { COLORS } from '../theme/colors';
+import { ICONS } from '../theme/icons';
 import CustomTextInput from '../components/CustomTextInput';
 import { useBookForm } from '../hooks/useBookForm';
 
@@ -83,12 +85,14 @@ export default function CreateBookScreen({ navigation }) {
       <View style={styles.pickerContainer}>
         <Text style={styles.label}>Cover Image</Text>
         <TouchableOpacity style={styles.uploadBox} onPress={pickCover} activeOpacity={0.8}>
-          <Text style={styles.uploadIcon}>🖼️</Text>
-          <Text style={styles.uploadTitle}>
-            {selectedCover ? selectedCover.name : "Upload Book Cover (JPG, PNG)"}
-          </Text>
-          {!selectedCover && (
-            <Text style={styles.uploadSubtitle}>Tap to select an image</Text>
+          {selectedCover ? (
+            <Image source={{ uri: selectedCover.uri }} style={styles.coverPreview} />
+          ) : (
+            <>
+              <SvgXml xml={ICONS.imagePlaceholder} style={styles.uploadIconSvg} />
+              <Text style={styles.uploadTitle}>Upload Book Cover</Text>
+              <Text style={styles.uploadSubtitle}>Tap to select an image (JPG, PNG)</Text>
+            </>
           )}
         </TouchableOpacity>
       </View>
@@ -96,7 +100,7 @@ export default function CreateBookScreen({ navigation }) {
       <View style={styles.pickerContainer}>
         <Text style={styles.label}>PDF Content</Text>
         <TouchableOpacity style={styles.uploadBox} onPress={pickFile} activeOpacity={0.8}>
-          <Text style={styles.uploadIcon}>⬆️</Text>
+          <SvgXml xml={ICONS.upArrow} style={styles.uploadIconSvg} />
           <Text style={styles.uploadTitle}>
             {selectedFile ? selectedFile.name : "Upload PDF, EPUB, MOBI File"}
           </Text>
@@ -186,9 +190,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  coverPreview: {
+    width: 120,
+    height: 180,
+    borderRadius: 8,
+    resizeMode: 'cover',
+  },
   uploadIcon: {
     fontSize: 40,
     color: COLORS.primaryAction,
+    marginBottom: 12,
+  },
+  uploadIconSvg: {
     marginBottom: 12,
   },
   uploadTitle: {
